@@ -8,14 +8,15 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn install
       - echo Building the Docker image...
+      - mvn package
       - docker build -t converter-service .
+      - echo tag the Docker image...
+      - docker tag converter-service:latest 246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker tag converter-service:latest 246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest
       - docker push 246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest
 artifacts:
   files:
