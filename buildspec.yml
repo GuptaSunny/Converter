@@ -4,11 +4,22 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - apt-get install -y openjdk-8-jdk
+      - apt-get install -y maven
       - mvn test
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - mvn install
   post_build:
     commands:
       - echo Build completed on `date`
-      - mvn package
+      - echo Pushing the Docker image...
 artifacts:
   files:
     - target/converter-1.0.jar
