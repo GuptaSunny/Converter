@@ -1,0 +1,6 @@
+[
+  {
+    "name": "converter-servicep",
+    "imageUri": "246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest"
+  }
+]
