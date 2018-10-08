@@ -9,8 +9,7 @@ phases:
     commands:
       - echo Build completed on `date`
       - mvn package
-      - printf '[{"name":"converter-service","imageUri":"246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service"}]' >
-imagedefinitions.json
+      - printf '[{"name":"converter-service","imageUri":"246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service"}]' > imagedefinitions.json
 artifacts:
   files:
     - target/converter-1.0.jar
