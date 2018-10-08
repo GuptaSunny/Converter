@@ -17,6 +17,6 @@ phases:
       - echo Pushing the Docker image...
       - docker push 246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"hello-world","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"converter-service","imageUri":"246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service"}]' $REPOSITORY_URI:latest > imagedefinitions.json
 artifacts:
     files: imagedefinitions.json
