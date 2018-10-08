@@ -10,16 +10,19 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - $(aws ecr get-login --region $AWS_DEFAULT_REGION)
+      - $(aws ecr get-login --no-include-email --region us-east-1)
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
       - mvn install
+      - docker build -t converter-service .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
+      - docker tag converter-service:latest 246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest
+      - docker push 246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest
 artifacts:
   files:
     - target/converter-1.0.jar
