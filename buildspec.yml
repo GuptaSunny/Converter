@@ -16,6 +16,3 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push 246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest
-artifacts:
-  files:
-    - target/converter-1.0.jar
