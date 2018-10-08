@@ -5,18 +5,23 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region us-east-1)
+      - REPOSITORY_URI=246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
       - echo Building the Docker image...
       - docker build -t converter-service .
       - echo tag the Docker image...
-      - docker tag converter-service:latest 246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service:latest
+     - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"converter-service","imageUri":"246368831125.dkr.ecr.us-east-1.amazonaws.com/converter-service"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+      - printf '[{"name":"converter-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
     files: imagedefinitions.json
